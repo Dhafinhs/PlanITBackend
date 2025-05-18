@@ -35,4 +35,12 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  console.log('Environment Variables:', {
+    PORT: process.env.PORT,
+    DB_USER: process.env.DB_USER,
+    DB_HOST: process.env.DB_HOST,
+    DB_NAME: process.env.DB_NAME,
+  });
+});
