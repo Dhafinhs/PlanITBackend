@@ -8,24 +8,25 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Debug log request
+// Debug log request masuk
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
   next();
 });
 
-// Routes
+// API Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/friends', require('./routes/friends'));
 app.use('/api/schedules', require('./routes/schedules'));
 app.use('/api/users', require('./routes/users'));
 
-// Root path (wajib untuk Railway/Render healthcheck)
+// Root path - penting untuk Railway agar backend dianggap aktif
 app.get('/', (req, res) => {
-  res.send('✅ PlanIT backend is running!');
+  console.log('✅ Received GET /');
+  res.status(200).send('✅ PlanIT backend is running!');
 });
 
-// Error handling
+// Error handler
 app.use((err, req, res, next) => {
   console.error('🔥 Error Handler Triggered:', {
     message: err.message,
@@ -39,7 +40,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Optional: Shutdown handling (catch container stop)
+// Graceful shutdown log
 process.on('SIGTERM', () => {
   console.log('🛑 SIGTERM received. Shutting down gracefully.');
 });
@@ -47,8 +48,8 @@ process.on('SIGTERM', () => {
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`✅ Server running on port ${PORT}`);
-  console.log('🌐 Loaded Environment Variables:', {
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log('🌐 Environment Variables:', {
     PORT: process.env.PORT,
     DB_USER: process.env.DB_USER,
     DB_HOST: process.env.DB_HOST,
